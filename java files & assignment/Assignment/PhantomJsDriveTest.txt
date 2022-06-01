@@ -1,0 +1,42 @@
+package Advanced;
+
+ 
+
+import java.io.File;
+import java.io.IOException;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriverService;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.service.DriverService;
+ 
+
+public class PhantomJSDriverTest {
+    
+	public static void main(String[] args) throws InterruptedException {
+        
+		File file = new File("C:/Users/NAVEENKUMAR/Desktop/Selenium/selenium jars/phantomjs-2.1.1-windows/phantomjs-2.1.1-windows/bin/phantomjs.exe");
+		
+		
+		//File file = new File("C:\\Users\\NAVEENKUMAR\\Desktop\\Selenium\\selenium jars\\phantomjsdriver-1.0.1.jar\\phantomjsdriver.exe");                
+        System.setProperty("phantomjs.binary.path", file.getAbsolutePath());
+        
+        DesiredCapabilities caps = new DesiredCapabilities();
+        caps.setJavascriptEnabled(true);                
+        caps.setCapability("takesScreenshot", true);  
+        caps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY,file.toString());
+        
+        WebDriver driver = new PhantomJSDriver(caps);
+            
+        driver.get("http://www.google.com");
+        //Thread.sleep(30000);
+        WebElement element = driver.findElement(By.name("q"));    
+        element.sendKeys("Phantom Driver");                    
+        element.submit();                     
+        System.out.println("Page title is: " + driver.getTitle());        
+        driver.quit();    
+    }
+}

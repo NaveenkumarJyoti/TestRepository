@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite hostname="MILO" failures="0" tests="1" name="GaadiBazaar.SearchByBudget" time="20.254" errors="0" timestamp="1 Jun 2022 04:00:14 GMT">
+  <testcase classname="GaadiBazaar.SearchByBudget" name="searchGaadiBybudget" time="20.231"/>
+</testsuite>

@@ -1,0 +1,114 @@
+package Assignment;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WindowType;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.Select;
+
+public class OpenCartFlow {
+
+	public static void main(String[] args) throws InterruptedException {
+
+		System.setProperty("webdriver.gecko.driver","C:\\\\Users\\\\NAVEENKUMAR\\\\Desktop\\\\Selenium\\\\selenium jars\\\\geckodriver-v0.31.0-win64\\\\geckodriver.exe");
+		WebDriver driver=new FirefoxDriver();
+		driver.get("https://demo.opencart.com");
+		
+		//storing the name of current(parent) window
+		String parentWindow=driver.getWindowHandle().toString();
+		Thread.sleep(2000);
+		
+		driver.findElement(By.name("search")).sendKeys("iMac");
+		driver.findElement(By.xpath("//header/div[1]/div[1]/div[2]/div[1]/span[1]/button[1]")).click();
+		
+		//driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2);
+		Thread.sleep(3000);
+		
+		Select dropColors = new Select(driver.findElement(By.id("input-sort")));
+		dropColors.selectByValue("https://demo.opencart.com/index.php?route=product/search&sort=p.price&order=ASC&search=iMac");
+		Thread.sleep(2000);
+		
+		JavascriptExecutor js= (JavascriptExecutor) driver;
+		js.executeScript("window.scrollBy(0,1000)");
+		
+		driver.findElement(By.xpath("//a[contains(text(),'iMac')]")).click();
+		
+		JavascriptExecutor js1= (JavascriptExecutor) driver;
+		js1.executeScript("window.scrollBy(0,1000)");
+		
+		driver.findElement(By.xpath("//a[contains(text(),'Apple Cinema 30\"')]")).click();
+		
+		JavascriptExecutor js2= (JavascriptExecutor) driver;
+		js2.executeScript("window.scrollBy(0,1000)");
+		Thread.sleep(1000);
+		
+		driver.findElement(By.id("button-cart")).click();
+		Thread.sleep(2000);
+		
+		//going back to iMac
+		if(driver.findElement(By.className("text-danger")).isDisplayed()) {
+			driver.navigate().back();
+		}
+		Thread.sleep(1000);
+		
+		js2.executeScript("window.scrollBy(0, -500)");
+		Thread.sleep(1000);
+		
+		String iMac=driver.getWindowHandle().toString();
+		System.out.println(driver.getTitle());
+		driver.findElement(By.xpath("//div[@class='tweet_iframe_widget']")).click();
+		Thread.sleep(3000);
+		
+		driver.switchTo().window(driver.getWindowHandle());
+		//Popup window
+		Thread.sleep(3000);
+		
+		WebElement floating=driver.findElement(By.xpath("//span[contains(text(),'Want to log in first?')]"));
+		System.out.println(floating.getText());
+		
+		driver.findElement(By.xpath("//span[contains(text(),'Log in')]"));
+		Thread.sleep(3000);
+		
+		System.out.println(driver.getTitle());
+		
+		//driver.switchTo().window("iMac");
+		driver.navigate().back();
+		System.out.println(driver.getTitle());
+		Thread.sleep(3000);
+		
+		//click add to cart [iMac]
+		driver.findElement(By.id("button-cart")).click();
+		Thread.sleep(3000);
+		
+		if(driver.findElement(By.linkText("shopping cart")).isDisplayed()) {
+			driver.findElement(By.linkText("shopping cart")).click();
+		}
+		
+		//modify quantity
+		driver.findElement(By.xpath("//tbody/tr[1]/td[4]/div[1]/input[1]")).sendKeys("4");
+		Thread.sleep(2000);
+		
+		//click modify
+		driver.findElement(By.xpath("//tbody/tr[1]/td[4]/div[1]/span[1]/button[1]")).click();
+		Thread.sleep(3000);
+		
+		//validate alert
+		if(driver.findElement(By.xpath("//body/div[@id='checkout-cart']/div[1]")).isDisplayed()) {
+			System.out.println(driver.findElement(By.xpath("//body/div[@id='checkout-cart']/div[1]")).getText());
+		}
+		
+		JavascriptExecutor js3= (JavascriptExecutor) driver;
+		js3.executeScript("window.scrollBy(0,500)");
+		Thread.sleep(2000);
+		
+		//click continue
+		driver.findElement(By.linkText("Continue Shopping")).click();
+		
+		driver.close();	
+	}
+
+}

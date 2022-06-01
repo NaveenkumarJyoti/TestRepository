@@ -1,0 +1,47 @@
+package Advanced;
+
+import java.io.File;
+import java.net.URL;
+import java.util.logging.FileHandler;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.Platform;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.testng.annotations.Test;
+
+
+@Test
+public class RemoteWebDriverTest {
+	
+	public void login() {
+		DesiredCapabilities capability = DesiredCapabilities.firefox();
+		FirefoxOptions options=new FirefoxOptions();
+		
+		capability.setBrowserName("firefox");
+		
+		capability.setPlatform(Platform.WIN10);
+		
+		RemoteWebDriver driver=new RemoteWebDriver(new URL("http://192.168.1.3:1997/wd/hub"),options);
+		
+		driver.navigate().to("https://demo.opencart.com/");
+		
+		driver.findElement(By.id("email")).sendKeys("naviinkj17@gmail.com");
+		driver.findElement(By.id("password")).sendKeys("asDF@123");
+		
+		options.setCapability("takesScreenshot",true);
+		try {
+			File src=((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+			FileHandler.copy(src, new File(".screenshots.jpeg"));
+		}catch(Exception e) {
+			System.out.println("Failure to take screenshot "+e);
+		}
+		
+		driver.findElement(By.id("btnlogin")).click();
+		driver.quit();
+	}
+	
+}

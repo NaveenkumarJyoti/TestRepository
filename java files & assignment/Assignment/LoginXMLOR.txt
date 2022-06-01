@@ -1,0 +1,49 @@
+package Advanced;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import org.dom4j.DocumentException;
+import org.dom4j.io.SAXReader;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+
+public class LoginXMLOR {
+
+	public static void main(String[] args) throws FileNotFoundException, DocumentException {
+		
+		WebDriver driver;
+		String driverPath="C:\\Users\\NAVEENKUMAR\\Desktop\\Selenium\\selenium jars\\geckodriver-v0.31.0-win64\\geckodriver.exe";
+		System.setProperty("webdriver.gecko.driver", driverPath);
+		driver=new FirefoxDriver();
+		
+		File src=new File("./TestResources/OR.xml");
+		FileInputStream fis=new FileInputStream(src);
+		SAXReader saxReader=new SAXReader();
+		org.dom4j.Document document = saxReader.read(fis);
+		
+		driver.get(document.selectSingleNode("//login_detail/url").getText());
+		
+		driver.findElement(By.name(document.selectSingleNode("//login_detail/useremail").getText())).sendKeys("naviinkj17@gmail.com");
+		driver.findElement(By.name(document.selectSingleNode("//login_detail/password").getText())).sendKeys("asDF@123");
+		//driver.findElement(By.xpath(document.selectSingleNode("//body/div[@id='account-login']/div[1]/div[1]/div[1]/div[2]/div[1]/form[1]/input[1]").getText())).click();
+		
+		driver.findElement(By.xpath("//body/div[@id='account-login']/div[1]/div[1]/div[1]/div[2]/div[1]/form[1]/input[1]")).click();
+		
+		driver.close();
+		System.out.println("Successfully read key values from xml files");
+	}
+
+}
+
+-----------------------------------------------------------------------------------------------------
+                 ----XML file----------------
+<?xml version="1.0" encoding="UTF-8"?>
+<login_detail>
+	<url>https://demo.opencart.com/index.php?route=account/login</url>
+	<useremail>email</useremail>
+	<password>password</password>
+	<loginButton>//body/div[@id='account-login']/div[1]/div[1]/div[1]/div[2]/div[1]/form[1]/input[1]
+	</loginButton>
+</login_detail>
